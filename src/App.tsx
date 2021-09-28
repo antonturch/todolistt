@@ -3,12 +3,17 @@ import "./App.css";
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
-import {SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
+import {Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
-import Container from '@mui/material/Container';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export type TaskType = {
     id: string
@@ -109,23 +114,49 @@ function App() {
 
     return (
         <div className="App">
-            <AddItemForm addNewItem={addNewTodolist}/>
-            {todolists.map((el) => {
-                debugger
-                let tasksForTodolist = tasks[el.id]
-                if (el.filter === "active") {
-                    tasksForTodolist = tasks[el.id].filter(el => el.isDone === false)
-                }
-                if (el.filter === "completed") {
-                    tasksForTodolist = tasks[el.id].filter(el => el.isDone === true)
-                }
-                return <Todolist key={el.id} setNewTodolistTitle={setNewTodolistTitle} setNewTaskTitle={setNewTaskTitle}
-                                 deleteTodolist={deleteTodolist}
-                                 todolistId={el.id} filter={el.filter} title={el.title}
-                                 tasks={tasksForTodolist}
-                                 deleteTask={deleteTask}
-                                 filterTasks={filterTasks} addNewTask={addNewTask} setIsDone={setIsDone}/>
-            })}
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                    >
+                        <MenuIcon/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        *TEST*APP*
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={{padding: "20px"}}>
+                    <AddItemForm addNewItem={addNewTodolist}/>
+                </Grid>
+                <Grid container spacing={7}>
+                    {todolists.map((el) => {
+                        debugger
+                        let tasksForTodolist = tasks[el.id]
+                        if (el.filter === "active") {
+                            tasksForTodolist = tasks[el.id].filter(el => el.isDone === false)
+                        }
+                        if (el.filter === "completed") {
+                            tasksForTodolist = tasks[el.id].filter(el => el.isDone === true)
+                        }
+                        return <Grid item>
+                            <Todolist key={el.id} setNewTodolistTitle={setNewTodolistTitle}
+                                      setNewTaskTitle={setNewTaskTitle}
+                                      deleteTodolist={deleteTodolist}
+                                      todolistId={el.id} filter={el.filter} title={el.title}
+                                      tasks={tasksForTodolist}
+                                      deleteTask={deleteTask}
+                                      filterTasks={filterTasks} addNewTask={addNewTask} setIsDone={setIsDone}/>
+                        </Grid>
+                    })}
+                </Grid>
+            </Container>
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
                 sx={{position: "absolute", bottom: 16, right: 16}}
@@ -139,6 +170,7 @@ function App() {
                     />
                 ))}
             </SpeedDial>
+
         </div>
     );
 }
