@@ -44,7 +44,7 @@ function App() {
     })
 
     let [todolists, setTodolist] = useState<Array<TodolistType>>([
-        {id: TodolistID1, title: "What to lern", filter: "all"},
+        {id: TodolistID1, title: "What to learn", filter: "all"},
         {id: TodolistID2, title: "What to buy", filter: "all"},
     ])
 
@@ -86,7 +86,7 @@ function App() {
         debugger
         const newTodolistId = v1();
         const newTodolist: TodolistType = {id: newTodolistId, title: title, filter: "all"}
-        setTodolist([newTodolist, ...todolists])
+        setTodolist([...todolists, newTodolist])
         setTasks({...tasks, [newTodolistId]: []})
     }
 
@@ -126,16 +126,16 @@ function App() {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        *TEST*APP*
+                        *TODOLIST*
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
             <Container fixed>
-                <Grid container style={{padding: "20px"}}>
+                <Grid container style={{padding: "20px", justifyContent: "center"}}>
                     <AddItemForm addNewItem={addNewTodolist}/>
                 </Grid>
-                <Grid container spacing={7}>
+                <Grid container spacing={3} style={{justifyContent: "center"}}>
                     {todolists.map((el) => {
                         debugger
                         let tasksForTodolist = tasks[el.id]
@@ -145,8 +145,8 @@ function App() {
                         if (el.filter === "completed") {
                             tasksForTodolist = tasks[el.id].filter(el => el.isDone === true)
                         }
-                        return <Grid item>
-                            <Todolist key={el.id} setNewTodolistTitle={setNewTodolistTitle}
+                        return <Grid item maxWidth={"400px"} key={el.id}>
+                            <Todolist setNewTodolistTitle={setNewTodolistTitle}
                                       setNewTaskTitle={setNewTaskTitle}
                                       deleteTodolist={deleteTodolist}
                                       todolistId={el.id} filter={el.filter} title={el.title}
@@ -170,7 +170,6 @@ function App() {
                     />
                 ))}
             </SpeedDial>
-
         </div>
     );
 }

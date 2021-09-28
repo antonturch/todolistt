@@ -30,7 +30,7 @@ export const AddItemForm = ({addNewItem}: AddItemPropsType) => {
 
     return (
         <div>
-            <TextField id="outlined-basic" label="New task" variant="outlined" className={error ? "error" : ""}
+            <TextField size={"small"} id="outlined-basic" label="New task" variant="outlined" className={error ? "error" : ""}
                        value={newItemText} onChange={addNewText}
                        onKeyPress={addNewItemWithEnter} error={error} helperText={error ? "title is required" : ""}/>
             <Button size={"large"} variant={"contained"} onClick={addNewItemHandler}>+</Button>

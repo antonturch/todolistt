@@ -3,7 +3,7 @@ import {FilterType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
 
-import {Button, Checkbox, IconButton, Paper, Tooltip, TextField} from "@mui/material";
+import {Button, Checkbox, IconButton, Paper, Tooltip, TextField, Grid} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -73,8 +73,7 @@ export const Todolist = ({
 
 
     return (
-        <div>
-            <Paper style={{padding: 20}} elevation={2}>
+            <Paper style={{padding: "20px"}} elevation={2}>
             <h3 style={{textAlign: "center"}}><EditableSpan
                 setNewItemTitleHandler={(newTodolistTitle) => setNewTodolistTitle(newTodolistTitle, todolistId)}
                 title={title}/>
@@ -97,7 +96,6 @@ export const Todolist = ({
                         onClick={complBtn}>Completed</Button>
             </div>
             </Paper>
-        </div>
     )
 }
 
