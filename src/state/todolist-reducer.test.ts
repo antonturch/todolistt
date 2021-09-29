@@ -1,40 +1,86 @@
-import {StateReducerType, userReducer} from "./user-reducer";
+import {v1} from "uuid";
+import {TodolistType} from "../App";
+import {
+    AddTodolistAC,
+    ChangeTodolistFilterAC,
+    ChangeTodolistTitleAC,
+    RemoveTodolistAC,
+    todolistReducer
+} from "./todolist-reducer";
 
-test("user reducer should increment only age", () => {
-    const startState: StateReducerType = {
-        age: 23,
-        childrenCount: 0,
-        name: "Anton",
-    }
+test("correct todolist should be removed", () => {
+    const TodolistID1 = v1();
+    const TodolistID2 = v1();
 
-    const endState: StateReducerType = userReducer(startState, {type: "INCREMENT-AGE"})
+    const startState: TodolistType[] = [
+        {id: TodolistID1, title: "What to learn", filter: "all"},
+        {id: TodolistID2, title: "What to buy", filter: "all"},
+    ]
 
-    expect(endState.age).toBe(24)
-    expect(endState.childrenCount).toBe(0)
+    const endState = todolistReducer(startState, RemoveTodolistAC(TodolistID1))
+
+    expect(endState.length).toBe(1);
+    expect(endState[0].id).toBe(TodolistID2);
 })
 
-test("user reducer should increment only childrenCount", () => {
-    const startState: StateReducerType = {
-        age: 23,
-        childrenCount: 0,
-        name: "Anton",
-    }
+test("add new todolist", () => {
+    const TodolistID1 = v1();
+    const TodolistID2 = v1();
 
-    const endState: StateReducerType = userReducer(startState, {type: "INCREMENT-CHILDREN-COUNT"});
+    const startState: TodolistType[] = [
+        {id: TodolistID1, title: "What to learn", filter: "all"},
+        {id: TodolistID2, title: "What to buy", filter: "all"},
+    ]
 
-    expect(endState.childrenCount).toBe(1);
-    expect(endState.age).toBe(23)
+    const endState = todolistReducer(startState, AddTodolistAC("testTitle"))
+
+    expect(endState.length).toBe(3);
+    expect(endState[2].title).toBe("testTitle");
+    expect(startState).not.toBe(endState);
 })
 
-test("user reducer should change user name", () => {
-    const startState: StateReducerType = {
-        age: 23,
-        childrenCount: 0,
-        name: "Anton",
-    }
+test("correct todolist should change his title", () => {
+    const TodolistID1 = v1();
+    const TodolistID2 = v1();
 
-    const endState: StateReducerType = userReducer(startState, {type: "CHANGE-USER-NAME", newUserName: "Alice Glass"})
+    const startState: TodolistType[] = [
+        {id: TodolistID1, title: "What to learn", filter: "all"},
+        {id: TodolistID2, title: "What to buy", filter: "all"},
+    ]
 
-    expect(endState.name).toBe("Alice Glass")
-    expect(startState.name).toBe("Anton")
+    // const action: ChangeTodolistTitleActionType = {
+    //     type: "CHANGE-TODOLIST-TITLE",
+    //     todolistId: TodolistID1,
+    //     newTodolistTitle: "changedTitle"
+    // }
+
+    const endState = todolistReducer(startState, ChangeTodolistTitleAC(TodolistID1, "changedTitle"))
+
+    expect(endState.length).toBe(2);
+    expect(endState[0].title).toBe("changedTitle");
+    expect(startState).not.toBe(endState);
+    expect(startState[0]).toBe(endState[0]);
+})
+
+test("correct todolist should change filter", () => {
+    const TodolistID1 = v1();
+    const TodolistID2 = v1();
+
+    const startState: TodolistType[] = [
+        {id: TodolistID1, title: "What to learn", filter: "all"},
+        {id: TodolistID2, title: "What to buy", filter: "all"},
+    ]
+
+    // const action: ChangeTodolistFilterActionType = {
+    //     type: "CHANGE-TODOLIST-FILTER",
+    //     todolistId: TodolistID1,
+    //     newTodolistFilter: "active"
+    // }
+
+    const endState = todolistReducer(startState, ChangeTodolistFilterAC(TodolistID1, "active"))
+
+    expect(endState.length).toBe(2);
+    expect(endState[0].filter).toBe("active");
+    expect(startState).not.toBe(endState);
+    expect(startState[0]).toBe(endState[0]);
 })
