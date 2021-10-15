@@ -3,7 +3,7 @@ import {FilterType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
 
-import {Button, Checkbox, IconButton, Paper, Tooltip, TextField, Grid} from "@mui/material";
+import {Button, Checkbox, IconButton, Paper, Tooltip, TextField} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
