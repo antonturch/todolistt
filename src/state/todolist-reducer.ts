@@ -1,4 +1,4 @@
-import {FilterType, TodolistType} from "../App";
+import {FilterType, TodolistType} from "../AppWithReducers";
 import {v1} from "uuid";
 
 
@@ -40,23 +40,32 @@ export const AddTodolistAC = (newTodolistTitle: string, todolistId: string): Add
     todolistId,
     newTodolistTitle
 })
-export const ChangeTodolistTitleAC = (todolistId: string, newTodolistTitle: string): ChangeTodolistTitleActionType => ({
+export const ChangeTodolistTitleAC = (todolistId: string,
+                                      newTodolistTitle: string): ChangeTodolistTitleActionType => ({
     type: "CHANGE-TODOLIST-TITLE",
     todolistId,
     newTodolistTitle
 })
-export const ChangeTodolistFilterAC = (todolistId: string, newTodolistFilter: FilterType): ChangeTodolistFilterActionType => ({
+export const ChangeTodolistFilterAC = (todolistId: string,
+                                       newTodolistFilter: FilterType): ChangeTodolistFilterActionType => ({
     type: "CHANGE-TODOLIST-FILTER",
     todolistId,
     newTodolistFilter
 })
 
-export const todolistReducer = (state: TodolistType[], action: ActionsType): TodolistType[] => {
+export const TodolistID1 = v1();
+export const TodolistID2 = v1();
+export const initialState: TodolistType[] = [
+    {id: TodolistID1, title: "What to learn", filter: "all"},
+    {id: TodolistID2, title: "What to buy", filter: "all"},
+]
+
+export const todolistReducer = (state = initialState, action: ActionsType): TodolistType[] => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(el => el.id !== action.todolistId)
         case "ADD-TODOLIST":
-            return [...state, {id: action.todolistId, title: action.newTodolistTitle, filter: "all"}]
+            return [{id: action.todolistId, title: action.newTodolistTitle, filter: "all"}, ...state]
         case "CHANGE-TODOLIST-TITLE":
             const todolistForNewTitle = state.find(el => el.id === action.todolistId)
             if (todolistForNewTitle) {
@@ -69,8 +78,7 @@ export const todolistReducer = (state: TodolistType[], action: ActionsType): Tod
                 todolistForNewFilter.filter = action.newTodolistFilter
             }
             return [...state]
-
         default:
-            throw new Error("I don't understand this action type")
+            return state
     }
 }

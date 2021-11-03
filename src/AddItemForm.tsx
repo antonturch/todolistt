@@ -7,6 +7,7 @@ export type AddItemPropsType = {
     addNewItem: (title: string) => void
 }
 export const AddItemForm = ({addNewItem}: AddItemPropsType) => {
+    console.log("AddItemForm rendered")
     const [error, setError] = useState<boolean>(false)
     const [newItemText, setNewItemText] = useState<string>("")
 

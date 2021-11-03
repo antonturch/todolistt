@@ -1,12 +1,14 @@
 import React, {ChangeEvent, useState} from "react";
-import {FilterType, TaskType} from "./App";
+import {FilterType, TaskType} from "./AppWithReducers";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
-
-import {Button, Checkbox, IconButton, Paper, Tooltip, TextField} from "@mui/material";
+import {Button, Checkbox, IconButton, Paper, TextField, Tooltip} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./state/store";
+import {AddTaskAC, ChangeTaskTitleAC, CheckboxChangeAC, RemoveTaskAC} from "./state/task-reducer";
 
 
 export type TodolistPropsType = {
@@ -14,68 +16,89 @@ export type TodolistPropsType = {
     todolistId: string
     filter: FilterType
     title: string
-    tasks: Array<TaskType>
-    deleteTask: (taskId: string, TodolistId: string) => void
-    filterTasks: (filterValue: FilterType, id: string) => void
-    addNewTask: (title: string, TodolistId: string) => void
-    setIsDone: (taskId: string, TodolistId: string) => void
+    filterTasks: (todolistId: string, newTodolistFilter: FilterType) => void
     deleteTodolist: (todolistId: string) => void
-    setNewTaskTitle: (newTaskTitle: string, todolistId: string, taskId: string) => void
 }
 
 export const Todolist = ({
                              setNewTodolistTitle,
-                             setNewTaskTitle,
                              deleteTodolist,
                              todolistId,
                              title,
-                             tasks,
-                             deleteTask,
                              filterTasks,
-                             addNewTask,
-                             setIsDone,
                              filter
                          }: TodolistPropsType) => {
-    const tasksElements = tasks.map(el => {
+    console.log("Todolist rendered")
 
-        const isDoneHandler = (taskId: string, TodolistId: string) => {
-            setIsDone(taskId, TodolistId)
+    const dispatch = useDispatch();
+    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
+    const deleteTask = (todolistId: string, taskId: string) => {
+        dispatch(RemoveTaskAC(todolistId, taskId))
+    }
+
+    const addNewTask = (todolistId: string, newTaskTitle: string) => {
+        dispatch(AddTaskAC(todolistId, newTaskTitle))
+    }
+
+    const setIsDone = (todolistId: string, taskId: string) => {
+        dispatch(CheckboxChangeAC(todolistId, taskId))
+    }
+
+    const setNewTaskTitle = (todolistId: string, taskId: string, newTaskTitle: string) => {
+        dispatch(ChangeTaskTitleAC(todolistId, taskId, newTaskTitle))
+    }
+
+    let tasksForTodolist = tasks
+    if (filter === "active") {
+        tasksForTodolist = tasks.filter((el: TaskType) => el.isDone === false)
+    }
+    if (filter === "completed") {
+        tasksForTodolist = tasks.filter((el: TaskType) => el.isDone === true)
+    }
+
+    const tasksElements = tasksForTodolist.map(el => {
+
+        const isDoneHandler = (TodolistId: string, taskId: string) => {
+            setIsDone(TodolistId, taskId)
         }
 
-        const setNewTaskTitleHandler = (newTaskTitle: string, todolistId: string, taskId: string) => {
-            setNewTaskTitle(newTaskTitle, todolistId, taskId)
+        const setNewTaskTitleHandler = (todolistId: string, taskId: string, newTaskTitle: string) => {
+            setNewTaskTitle(todolistId, taskId, newTaskTitle)
         }
         const label = {inputProps: {"aria-label": "Checkbox demo"}};
         return <li className={el.isDone ? "is-done" : ""} key={el.id}>
 
             <Checkbox checked={el.isDone}
-                      onChange={() => isDoneHandler(el.id, todolistId)}
+                      onChange={() => isDoneHandler(todolistId, el.id)}
                       {...label}
                       icon={<BookmarkBorderIcon/>}
                       checkedIcon={<BookmarkIcon/>}
             />
             <EditableSpan setNewItemTitleHandler={(newTaskTitle) =>
-                setNewTaskTitleHandler(newTaskTitle, todolistId, el.id)}
+                setNewTaskTitleHandler(todolistId, el.id, newTaskTitle)}
                           title={el.title}/>
             <IconButton aria-label="delete" size="small">
-                <DeleteIcon onClick={() => deleteTask(el.id, todolistId)} fontSize="inherit"/>
+                <DeleteIcon onClick={() => deleteTask(todolistId, el.id)} fontSize="inherit"/>
             </IconButton>
         </li>
     })
 
-    const allBtn = () => filterTasks("all", todolistId)
-    const actvBtn = () => filterTasks("active", todolistId)
-    const complBtn = () => filterTasks("completed", todolistId)
+    const allBtn = () => filterTasks(todolistId, "all")
+    const actvBtn = () => {
+        filterTasks(todolistId, "active")
+    }
+    const complBtn = () => filterTasks(todolistId, "completed")
 
     const addNewItem = (newItemText: string) => {
-        addNewTask(newItemText, todolistId)
-    }
+        addNewTask(todolistId, newItemText)
+     }
 
 
     return (
-            <Paper style={{padding: "20px"}} elevation={2}>
+        <Paper style={{padding: "20px"}} elevation={2}>
             <h3 style={{textAlign: "center"}}><EditableSpan
-                setNewItemTitleHandler={(newTodolistTitle) => setNewTodolistTitle(newTodolistTitle, todolistId)}
+                setNewItemTitleHandler={(newTodolistTitle) => setNewTodolistTitle(newTodolistTitle,
+                    todolistId)}
                 title={title}/>
                 <Tooltip title="Delete">
                     <IconButton aria-label="delete" size="small">
@@ -95,7 +118,7 @@ export const Todolist = ({
                 <Button size={"small"} variant={filter === "completed" ? "contained" : "outlined"}
                         onClick={complBtn}>Completed</Button>
             </div>
-            </Paper>
+        </Paper>
     )
 }
 
@@ -108,7 +131,6 @@ export const EditableSpan = ({title, setNewItemTitleHandler}: EditableSpanPropsT
     const [editMode, setEditMode] = useState<boolean>(false)
     const [taskTitle, setTaskTitle] = useState<string>(title)
     const correctTask = (event: ChangeEvent<HTMLInputElement>) => {
-        debugger
         let newTaskTitle = event.currentTarget.value;
         setTaskTitle(newTaskTitle)
         setNewItemTitleHandler(newTaskTitle)
@@ -116,8 +138,11 @@ export const EditableSpan = ({title, setNewItemTitleHandler}: EditableSpanPropsT
     const onBlurHandler = () => setEditMode(false)
     return (
         <span>
-            {editMode && <TextField multiline variant={"standard"} onChange={correctTask} value={taskTitle} autoFocus onBlur={onBlurHandler}/>}
-            {editMode || <span style={{wordWrap: "break-word"}} onDoubleClick={() => setEditMode(true)}>{taskTitle}</span>}
+            {editMode &&
+            <TextField multiline variant={"standard"} onChange={correctTask} value={taskTitle} autoFocus
+                       onBlur={onBlurHandler}/>}
+            {editMode || <span style={{wordWrap: "break-word"}}
+                               onDoubleClick={() => setEditMode(true)}>{taskTitle}</span>}
         </span>
     )
 }

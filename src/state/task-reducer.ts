@@ -1,6 +1,11 @@
-import {TasksType, TaskType} from "../App";
+import {TasksType, TaskType} from "../AppWithReducers";
 import {v1} from "uuid";
-import {AddTodolistActionType, RemoveTodolistActionType} from "./todolist-reducer";
+import {
+    AddTodolistActionType,
+    RemoveTodolistActionType,
+    TodolistID1,
+    TodolistID2
+} from "./todolist-reducer";
 
 export type RemoveTaskActionType = {
     type: "REMOVE-TASK"
@@ -60,7 +65,16 @@ export type ActionsType =
     | AddTodolistActionType
     | RemoveTodolistActionType;
 
-export const taskReducer = (state: TasksType, action: ActionsType): TasksType => {
+const initialState: TasksType = {
+    [TodolistID1]: [{id: v1(), title: "HTML", isDone: true,},
+        {id: v1(), title: "CSS", isDone: false,},
+        {id: v1(), title: "JS", isDone: false,},],
+    [TodolistID2]: [{id: v1(), title: "React", isDone: true,},
+        {id: v1(), title: "Material UI", isDone: false,},
+        {id: v1(), title: "Redux", isDone: false,},],
+}
+
+export const taskReducer = (state = initialState, action: ActionsType): TasksType => {
     switch (action.type) {
         case "REMOVE-TASK":
             const undelTasks = state[action.todolistId].filter(el => el.id !== action.taskId);
@@ -69,12 +83,10 @@ export const taskReducer = (state: TasksType, action: ActionsType): TasksType =>
             const newTask: TaskType = {id: v1(), title: action.newTaskTitle, isDone: false}
             return {...state, [action.todolistId]: [newTask, ...state[action.todolistId]]}
         case "CHECKBOX-CHANGE":
-            const editableTaskForChangeCheckbox = state[action.todolistId].find(
-                el => el.id === action.taskId)
-            if (editableTaskForChangeCheckbox) {
-                editableTaskForChangeCheckbox.isDone = !editableTaskForChangeCheckbox.isDone
+            return {...state,
+                [action.todolistId]: state[action.todolistId].map(
+                    el => el.id === action.taskId ? {...el, isDone: !el.isDone} : el)
             }
-            return {...state}
         case "CHANGE-TASK-TITLE":
             const editableTaskForChangeTitle = state[action.todolistId].find(
                 el => el.id === action.taskId)
@@ -89,7 +101,7 @@ export const taskReducer = (state: TasksType, action: ActionsType): TasksType =>
             delete stateCopy[action.todolistId]
             return stateCopy
         default:
-            throw new Error("I don't understand this action type")
+            return state
     }
 }
 

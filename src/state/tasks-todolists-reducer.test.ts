@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {TodolistType} from "../App";
+import {TodolistType} from "../AppWithReducers";
 import {RemoveTodolistAC, todolistReducer} from "./todolist-reducer";
 import {taskReducer} from "./task-reducer";
 
@@ -25,7 +25,7 @@ test("add/delete correct file stryctyre in tasks and todolists", () => {
     const endTasksState = taskReducer(startTasksState, RemoveTodolistAC(TodolistID1))
 
     expect(endTodolistState.length).toBe(1)
-    expect(endTodolistState[1].id).toBe(TodolistID2)
+    expect(endTodolistState[0].id).toBe(TodolistID2)
 
     expect(endTasksState).toEqual({
         [TodolistID2]: [{id: "1", title: "React", isDone: true,},
