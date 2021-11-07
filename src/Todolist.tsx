@@ -1,14 +1,14 @@
-import React, {ChangeEvent, useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import {FilterType, TaskType} from "./AppWithReducers";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
-import {Button, Checkbox, IconButton, Paper, TextField, Tooltip} from "@mui/material";
+import {Button, IconButton, Paper, Tooltip} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {AddTaskAC, ChangeTaskTitleAC, CheckboxChangeAC, RemoveTaskAC} from "./state/task-reducer";
+import {Task} from "./Task";
+import {EditableSpan} from "./EditableSpan";
 
 
 export type TodolistPropsType = {
@@ -104,66 +104,3 @@ export const Todolist = React.memo(({
     )
 })
 
-export type EditableSpanPropsType = {
-    title: string
-    setNewItemTitleHandler: (newTaskTitle: string) => void
-}
-
-export const EditableSpan = React.memo(({title, setNewItemTitleHandler}: EditableSpanPropsType) => {
-    console.log("EditableSpan rendered")
-    const [editMode, setEditMode] = useState<boolean>(false)
-    const [taskTitle, setTaskTitle] = useState<string>(title)
-    const correctTask = (event: ChangeEvent<HTMLInputElement>) => {
-        let newTaskTitle = event.currentTarget.value;
-        setTaskTitle(newTaskTitle)
-        setNewItemTitleHandler(newTaskTitle)
-    }
-    const onBlurHandler = () => setEditMode(false)
-    return (
-        <span>
-            {editMode &&
-            <TextField multiline variant={"standard"} onChange={correctTask} value={taskTitle} autoFocus
-                       onBlur={onBlurHandler}/>}
-            {editMode || <span style={{wordWrap: "break-word"}}
-                               onDoubleClick={() => setEditMode(true)}>{taskTitle}</span>}
-        </span>
-    )
-})
-
-type TaskPropsType = {
-    setIsDone: (todolistId: string, taskId: string) => void
-    setNewTaskTitle: (todolistId: string, taskId: string, newTaskTitle: string) => void
-    task: TaskType
-    todolistId: string
-    deleteTask: (todolistId: string, taskId: string) => void
-}
-
-const Task: React.FC<TaskPropsType> = React.memo(
-    ({setIsDone, setNewTaskTitle, task, todolistId, deleteTask}) => {
-        console.log("Task render")
-        const isDoneHandler = (TodolistId: string, taskId: string) => {
-            setIsDone(TodolistId, taskId)
-        }
-
-        const setNewTaskTitleHandler = useCallback(
-            (todolistId: string, taskId: string, newTaskTitle: string) => {
-                setNewTaskTitle(todolistId, taskId, newTaskTitle)
-            }, [setNewTaskTitle])
-        const label = {inputProps: {"aria-label": "Checkbox demo"}};
-        return <li className={task.isDone ? "is-done" : ""} key={task.id}>
-
-            <Checkbox checked={task.isDone}
-                      onChange={() => isDoneHandler(todolistId, task.id)}
-                      {...label}
-                      icon={<BookmarkBorderIcon/>}
-                      checkedIcon={<BookmarkIcon/>}
-            />
-            <EditableSpan setNewItemTitleHandler={(newTaskTitle) => {
-                setNewTaskTitleHandler(todolistId, task.id, newTaskTitle)
-            }}
-                          title={task.title}/>
-            <IconButton aria-label="delete" size="small">
-                <DeleteIcon onClick={() => deleteTask(todolistId, task.id)} fontSize="inherit"/>
-            </IconButton>
-        </li>
-    })
