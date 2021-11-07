@@ -1,7 +1,6 @@
-import React from "react";
+import React, {useCallback} from "react";
 import "./App.css";
 import {Todolist} from "./Todolist";
-import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
@@ -37,28 +36,28 @@ export type TodolistType = {
 }
 export type TasksType = { [key: string]: Array<TaskType> }
 
-
 function AppWithReducers() {
     console.log("App rendered")
 
     const dispatch = useDispatch();
     const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolist)
 
-    const filterTasks = (todolistId: string, newTodolistFilter: FilterType) => {
+    const filterTasks = useCallback((todolistId: string, newTodolistFilter: FilterType) => {
         dispatch(ChangeTodolistFilterAC(todolistId, newTodolistFilter));
-    }
-    const deleteTodolist = (todolistId: string) => {
+    }, [dispatch])
+
+    const deleteTodolist = useCallback((todolistId: string) => {
         dispatch(RemoveTodolistAC(todolistId))
-    }
+    }, [dispatch])
 
-    const addNewTodolist = (newTodolistTitle: string) => {
-        const newTodolistId = v1();
+    const addNewTodolist = useCallback((newTodolistTitle: string) => {
+        const newTodolistId = "1";
         dispatch(AddTodolistAC(newTodolistTitle, newTodolistId))
-    }
+    }, [dispatch])
 
-    const setNewTodolistTitle = (todolistId: string, newTodolistTitle: string) => {
+    const setNewTodolistTitle = useCallback((todolistId: string, newTodolistTitle: string) => {
         dispatch(ChangeTodolistTitleAC(todolistId, newTodolistTitle))
-    }
+    }, [dispatch])
 
     const actions = [
         {icon: <FileCopyIcon/>, name: "Copy"},

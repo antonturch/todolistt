@@ -83,17 +83,17 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
             const newTask: TaskType = {id: v1(), title: action.newTaskTitle, isDone: false}
             return {...state, [action.todolistId]: [newTask, ...state[action.todolistId]]}
         case "CHECKBOX-CHANGE":
-            return {...state,
+            return {
+                ...state,
                 [action.todolistId]: state[action.todolistId].map(
                     el => el.id === action.taskId ? {...el, isDone: !el.isDone} : el)
             }
         case "CHANGE-TASK-TITLE":
-            const editableTaskForChangeTitle = state[action.todolistId].find(
-                el => el.id === action.taskId)
-            if (editableTaskForChangeTitle) {
-                editableTaskForChangeTitle.title = action.newTaskTitle
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId].map(
+                    el => el.id === action.taskId ? {...el, title: action.newTaskTitle} : el)
             }
-            return {...state}
         case "ADD-TODOLIST":
             return {...state, [action.todolistId]: []}
         case "REMOVE-TODOLIST" :

@@ -1,12 +1,12 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {TextField} from "@mui/material";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import "./App.css";
 
 export type AddItemPropsType = {
-    addNewItem: (title: string) => void
+    addNewItem: (newItemText: string) => void
 }
-export const AddItemForm = ({addNewItem}: AddItemPropsType) => {
+export const AddItemForm = React.memo(({addNewItem}: AddItemPropsType) => {
     console.log("AddItemForm rendered")
     const [error, setError] = useState<boolean>(false)
     const [newItemText, setNewItemText] = useState<string>("")
@@ -17,7 +17,7 @@ export const AddItemForm = ({addNewItem}: AddItemPropsType) => {
     }
 
     const addNewItemHandler = () => {
-        !newItemText.trim() ? setError(true) : addNewItem(newItemText)
+        newItemText.trim() ? addNewItem(newItemText) : setError(true)
         setNewItemText("")
     }
     const addNewItemWithEnter = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -31,10 +31,12 @@ export const AddItemForm = ({addNewItem}: AddItemPropsType) => {
 
     return (
         <div>
-            <TextField size={"small"} id="outlined-basic" label="New task" variant="outlined" className={error ? "error" : ""}
+            <TextField size={"small"} id="outlined-basic" label="New task" variant="outlined"
+                       className={error ? "error" : ""}
                        value={newItemText} onChange={addNewText}
-                       onKeyPress={addNewItemWithEnter} error={error} helperText={error ? "title is required" : ""}/>
+                       onKeyPress={addNewItemWithEnter} error={error}
+                       helperText={error ? "title is required" : ""}/>
             <Button size={"large"} variant={"contained"} onClick={addNewItemHandler}>+</Button>
         </div>
     )
-}
+})
