@@ -1,14 +1,20 @@
 import React, {useCallback} from "react";
-import {FilterType, TaskType} from "./AppWithReducers";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
 import {Button, IconButton, Paper, Tooltip} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {AddTaskAC, ChangeTaskTitleAC, CheckboxChangeAC, RemoveTaskAC} from "./state/task-reducer";
+import {
+    AddTaskAC,
+    ChangeTaskTitleAC,
+    CheckboxChangeAC,
+    RemoveTaskAC,
+    TaskEntityType
+} from "./state/task-reducer";
 import {Task} from "./Task";
 import {EditableSpan} from "./EditableSpan";
+import {FilterType} from "./state/todolist-reducer";
 
 
 export type TodolistPropsType = {
@@ -31,7 +37,7 @@ export const Todolist = React.memo(({
     console.log("Todolist rendered")
 
     const dispatch = useDispatch();
-    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
+    const tasks = useSelector<AppRootStateType, TaskEntityType[]>(state => state.tasks[todolistId])
     const deleteTask = (todolistId: string, taskId: string) => {
         dispatch(RemoveTaskAC(todolistId, taskId))
     }
@@ -50,10 +56,10 @@ export const Todolist = React.memo(({
 
     let tasksForTodolist = tasks
     if (filter === "active") {
-        tasksForTodolist = tasks.filter((el: TaskType) => el.isDone === false)
+        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.isDone === false)
     }
     if (filter === "completed") {
-        tasksForTodolist = tasks.filter((el: TaskType) => el.isDone === true)
+        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.isDone === true)
     }
 
     const setNewTodolistItem = useCallback((newTodolistTitle: string) => {

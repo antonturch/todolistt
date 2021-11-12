@@ -1,5 +1,4 @@
 import axios from "axios";
-import {TodolistType} from "../stories/todolists-api.stories";
 
 // const settings = {
 //     withCredentials: true,
@@ -7,6 +6,12 @@ import {TodolistType} from "../stories/todolists-api.stories";
 //         "api-key": "cf073426-4174-4c42-a07f-d5b89d961d16"
 //     }
 // }
+export type TodolistType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
 
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -51,10 +56,25 @@ export type ApiTaskResponseType = {
     // messages: string[]
 }
 
+enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3,
+}
+
+enum TaskPriorities {
+    Low = 2,
+    Middle =1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4,
+}
+
 export type TaskType = {
     description: string
     title: string
-    status: number
+    status: TaskStatuses
     priority: number
     startDate: string
     deadline: string

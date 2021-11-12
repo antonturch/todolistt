@@ -1,4 +1,4 @@
-import {TasksType, TaskType} from "../AppWithReducers";
+import {TasksType} from "../AppWithReducers";
 import {v1} from "uuid";
 import {
     AddTodolistActionType,
@@ -6,6 +6,11 @@ import {
     TodolistID1,
     TodolistID2
 } from "./todolist-reducer";
+import {TaskType} from "../api/todolists-api";
+
+export type TaskEntityType = TaskType & {
+    isDone: boolean
+}
 
 export type RemoveTaskActionType = {
     type: "REMOVE-TASK"
@@ -66,12 +71,84 @@ export type ActionsType =
     | RemoveTodolistActionType;
 
 const initialState: TasksType = {
-    [TodolistID1]: [{id: v1(), title: "HTML", isDone: true,},
-        {id: v1(), title: "CSS", isDone: false,},
-        {id: v1(), title: "JS", isDone: false,},],
-    [TodolistID2]: [{id: v1(), title: "React", isDone: true,},
-        {id: v1(), title: "Material UI", isDone: false,},
-        {id: v1(), title: "Redux", isDone: false,},],
+    [TodolistID1]: [{
+        id: v1(),
+        title: "HTML",
+        isDone: true,
+        description: "",
+        status: 0,
+        priority: 0,
+        startDate: "",
+        deadline: "",
+        todoListId: "",
+        order: 0,
+        addedDate: "",
+    },
+        {
+            id: v1(),
+            title: "HTML",
+            isDone: true,
+            description: "",
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: "",
+            todoListId: "",
+            order: 0,
+            addedDate: "",
+        },
+        {
+            id: v1(),
+            title: "HTML",
+            isDone: true,
+            description: "",
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: "",
+            todoListId: "",
+            order: 0,
+            addedDate: "",
+        },],
+    [TodolistID2]: [{
+        id: v1(),
+        title: "HTML",
+        isDone: true,
+        description: "",
+        status: 0,
+        priority: 0,
+        startDate: "",
+        deadline: "",
+        todoListId: "",
+        order: 0,
+        addedDate: "",
+    },
+        {
+            id: v1(),
+            title: "HTML",
+            isDone: true,
+            description: "",
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: "",
+            todoListId: "",
+            order: 0,
+            addedDate: "",
+        },
+        {
+            id: v1(),
+            title: "HTML",
+            isDone: true,
+            description: "",
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: "",
+            todoListId: "",
+            order: 0,
+            addedDate: "",
+        },],
 }
 
 export const taskReducer = (state = initialState, action: ActionsType): TasksType => {
@@ -80,7 +157,19 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
             const undelTasks = state[action.todolistId].filter(el => el.id !== action.taskId);
             return {...state, [action.todolistId]: undelTasks}
         case "ADD-TASK":
-            const newTask: TaskType = {id: v1(), title: action.newTaskTitle, isDone: false}
+            const newTask: TaskEntityType = {
+                id: v1(),
+                title: action.newTaskTitle,
+                isDone: false,
+                description: "",
+                status: 0,
+                priority: 0,
+                startDate: "",
+                deadline: "",
+                todoListId: "",
+                order: 0,
+                addedDate: "",
+            }
             return {...state, [action.todolistId]: [newTask, ...state[action.todolistId]]}
         case "CHECKBOX-CHANGE":
             return {

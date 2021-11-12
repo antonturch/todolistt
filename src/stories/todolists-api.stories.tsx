@@ -1,16 +1,11 @@
 import {useEffect, useState} from "react";
-import {tasksApi, todolistsApi} from "../api/todolists-api";
+import {tasksApi, todolistsApi, TodolistType} from "../api/todolists-api";
 
 export default {
     title: "API"
 }
 
-export type TodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
+
 
 export const GetTodolist = () => {
     const [state, setState] = useState<TodolistType[] | null>(null)

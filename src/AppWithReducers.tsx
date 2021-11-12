@@ -17,30 +17,22 @@ import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC,
-    RemoveTodolistAC
+    FilterType,
+    RemoveTodolistAC,
+    TodolistEntityType
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
+import {TaskEntityType} from "./state/task-reducer";
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type FilterType = "all" | "active" | "completed";
 
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
-export type TasksType = { [key: string]: Array<TaskType> }
+export type TasksType = { [key: string]: Array<TaskEntityType> }
 
 function AppWithReducers() {
     console.log("App rendered")
 
     const dispatch = useDispatch();
-    const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolist)
+    const todolists = useSelector<AppRootStateType, TodolistEntityType[]>(state => state.todolist)
 
     const filterTasks = useCallback((todolistId: string, newTodolistFilter: FilterType) => {
         dispatch(ChangeTodolistFilterAC(todolistId, newTodolistFilter));
@@ -90,7 +82,7 @@ function AppWithReducers() {
                     <AddItemForm addNewItem={addNewTodolist}/>
                 </Grid>
                 <Grid container spacing={3} style={{justifyContent: "center"}}>
-                    {todolists.map((el: TodolistType) => {
+                    {todolists.map((el: TodolistEntityType) => {
                         return <Grid item maxWidth={"400px"} key={el.id}>
                             <Todolist setNewTodolistTitle={setNewTodolistTitle}
                                       deleteTodolist={deleteTodolist}

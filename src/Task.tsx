@@ -1,15 +1,15 @@
-import {TaskType} from "./AppWithReducers";
 import React, {useCallback} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {EditableSpan} from "./EditableSpan";
+import {TaskEntityType} from "./state/task-reducer";
 
 type TaskPropsType = {
     setIsDone: (todolistId: string, taskId: string) => void
     setNewTaskTitle: (todolistId: string, taskId: string, newTaskTitle: string) => void
-    task: TaskType
+    task: TaskEntityType
     todolistId: string
     deleteTask: (todolistId: string, taskId: string) => void
 }
