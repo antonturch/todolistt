@@ -25,9 +25,9 @@ export const Task: React.FC<TaskPropsType> = React.memo(
                 setNewTaskTitle(todolistId, taskId, newTaskTitle)
             }, [setNewTaskTitle])
         const label = {inputProps: {"aria-label": "Checkbox demo"}};
-        return <li className={task.isDone ? "is-done" : ""} key={task.id}>
+        return <li className={task.status ? "is-done" : ""} key={task.id}>
 
-            <Checkbox checked={task.isDone}
+            <Checkbox checked={Boolean(task.status)}
                       onChange={() => isDoneHandler(todolistId, task.id)}
                       {...label}
                       icon={<BookmarkBorderIcon/>}

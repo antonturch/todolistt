@@ -1,4 +1,5 @@
 import axios from "axios";
+import {TaskEntityType} from "../state/task-reducer";
 
 // const settings = {
 //     withCredentials: true,
@@ -49,40 +50,16 @@ export const todolistsApi = {
 }
 
 export type ApiTaskResponseType = {
-    items: TaskType
+    items: TaskEntityType
     totalCount: number
     error: string | null
     // resultCode: number
     // messages: string[]
 }
 
-enum TaskStatuses {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-    Draft = 3,
-}
 
-enum TaskPriorities {
-    Low = 2,
-    Middle =1,
-    Hi = 2,
-    Urgently = 3,
-    Later = 4,
-}
 
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatuses
-    priority: number
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
+
 
 
 export const tasksApi = {
