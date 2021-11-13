@@ -7,7 +7,7 @@ export default {
     component: Task
 }
 
-const setIsDone = action("Set 'isDone'")
+const changeStatus = action("Set 'isDone'")
 const setNewTaskTitle = action("setNewTaskTitle")
 const task = {
     id: v1(),
@@ -25,6 +25,6 @@ const task = {
 const deleteTask = action("deleteTask")
 
 export const TaskStory = () => {
-    return <Task setIsDone={setIsDone} setNewTaskTitle={setNewTaskTitle} task={task} todolistId={"1"}
+    return <Task changeStatus={changeStatus} setNewTaskTitle={setNewTaskTitle} task={task} todolistId={"1"}
                  deleteTask={deleteTask}/>
 }

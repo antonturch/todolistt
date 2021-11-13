@@ -8,9 +8,10 @@ import {AppRootStateType} from "./state/store";
 import {
     AddTaskAC,
     ChangeTaskTitleAC,
-    CheckboxChangeAC,
     RemoveTaskAC,
-    TaskEntityType
+    StatusChangeAC,
+    TaskEntityType,
+    TaskStatuses
 } from "./state/task-reducer";
 import {Task} from "./Task";
 import {EditableSpan} from "./EditableSpan";
@@ -46,8 +47,8 @@ export const Todolist = React.memo(({
         dispatch(AddTaskAC(todolistId, newTaskTitle))
     }, [dispatch])
 
-    const setIsDone = useCallback((todolistId: string, taskId: string) => {
-        dispatch(CheckboxChangeAC(todolistId, taskId))
+    const changeStatus = useCallback((todolistId: string, taskId: string) => {
+        dispatch(StatusChangeAC(todolistId, taskId))
     }, [dispatch])
 
     const setNewTaskTitle = useCallback((todolistId: string, taskId: string, newTaskTitle: string) => {
@@ -56,10 +57,10 @@ export const Todolist = React.memo(({
 
     let tasksForTodolist = tasks
     if (filter === "active") {
-        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.status === false)
+        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.status === TaskStatuses.New)
     }
     if (filter === "completed") {
-        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.isDone === true)
+        tasksForTodolist = tasks.filter((el: TaskEntityType) => el.status === TaskStatuses.Completed)
     }
 
     const setNewTodolistItem = useCallback((newTodolistTitle: string) => {
@@ -67,7 +68,7 @@ export const Todolist = React.memo(({
     }, [setNewTodolistTitle, todolistId])
 
     const tasksElements = tasksForTodolist.map(
-        el => <Task setIsDone={setIsDone} setNewTaskTitle={setNewTaskTitle} task={el}
+        el => <Task changeStatus={changeStatus} setNewTaskTitle={setNewTaskTitle} task={el}
                     todolistId={todolistId} deleteTask={deleteTask} key={el.id}/>)
 
 

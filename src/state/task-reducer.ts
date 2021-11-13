@@ -7,14 +7,14 @@ import {
     TodolistID2
 } from "./todolist-reducer";
 
-enum TaskStatuses {
+export enum TaskStatuses {
     New = 0,
     InProgress = 1,
     Completed = 2,
     Draft = 3,
 }
 
-enum TaskPriorities {
+export enum TaskPriorities {
     Low = 0,
     Middle = 1,
     Hi = 2,
@@ -71,7 +71,7 @@ export const AddTaskAC = (todolistId: string, newTaskTitle: string): AddTaskActi
     newTaskTitle
 })
 
-export const CheckboxChangeAC = (todolistId: string, taskId: string): CheckboxChangeActionType => ({
+export const StatusChangeAC = (todolistId: string, taskId: string): CheckboxChangeActionType => ({
     type: "CHECKBOX-CHANGE",
     todolistId,
     taskId
@@ -122,7 +122,7 @@ const initialState: TasksType = {
             id: v1(),
             title: "HTML3",
             description: "",
-            status: 0,
+            status: TaskStatuses.New,
             priority: TaskPriorities.Middle,
             startDate: "",
             deadline: "",
@@ -134,7 +134,7 @@ const initialState: TasksType = {
         id: v1(),
         title: "HTML4",
         description: "",
-        status: TaskStatuses.InProgress,
+        status: TaskStatuses.Completed,
         priority: TaskPriorities.Middle,
         startDate: "",
         deadline: "",
@@ -146,7 +146,7 @@ const initialState: TasksType = {
             id: v1(),
             title: "HTML5",
             description: "",
-            status: TaskStatuses.Draft,
+            status: TaskStatuses.Completed,
             priority: TaskPriorities.Middle,
             startDate: "",
             deadline: "",
@@ -179,7 +179,7 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
                 title: action.newTaskTitle,
                 description: "",
                 status: TaskStatuses.New,
-                priority: 0,
+                priority: TaskPriorities.Middle,
                 startDate: "",
                 deadline: "",
                 todoListId: action.todolistId,
@@ -192,7 +192,11 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(
                     // FIX BELOW
-                    el => el.id === action.taskId ? {...el, status: el.status} : el)
+                    el => el.id === action.taskId ? {
+                        ...el,
+                        status: el.status === TaskStatuses.Completed ? TaskStatuses.New :
+                            TaskStatuses.Completed
+                    } : el)
             }
         case "CHANGE-TASK-TITLE":
             return {

@@ -7,17 +7,17 @@ import {EditableSpan} from "./EditableSpan";
 import {TaskEntityType} from "./state/task-reducer";
 
 type TaskPropsType = {
-    setIsDone: (todolistId: string, taskId: string) => void
+    changeStatus: (todolistId: string, taskId: string) => void
     setNewTaskTitle: (todolistId: string, taskId: string, newTaskTitle: string) => void
     task: TaskEntityType
     todolistId: string
     deleteTask: (todolistId: string, taskId: string) => void
 }
 export const Task: React.FC<TaskPropsType> = React.memo(
-    ({setIsDone, setNewTaskTitle, task, todolistId, deleteTask}) => {
+    ({changeStatus, setNewTaskTitle, task, todolistId, deleteTask}) => {
         console.log("Task render")
-        const isDoneHandler = (TodolistId: string, taskId: string) => {
-            setIsDone(TodolistId, taskId)
+        const changeStatusHadler = (TodolistId: string, taskId: string) => {
+            changeStatus(TodolistId, taskId)
         }
 
         const setNewTaskTitleHandler = useCallback(
@@ -28,7 +28,7 @@ export const Task: React.FC<TaskPropsType> = React.memo(
         return <li className={task.status ? "is-done" : ""} key={task.id}>
 
             <Checkbox checked={Boolean(task.status)}
-                      onChange={() => isDoneHandler(todolistId, task.id)}
+                      onChange={() => changeStatusHadler(todolistId, task.id)}
                       {...label}
                       icon={<BookmarkBorderIcon/>}
                       checkedIcon={<BookmarkIcon/>}
