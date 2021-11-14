@@ -178,3 +178,35 @@ export const fetchTasksTC = (todolistId: string) => {
     }
 }
 
+export const createTasksTC = (todolistId: string, taskTitle: string) => {
+    return (dispatch: Dispatch) => {
+        tasksApi.createTasks(todolistId, taskTitle)
+            .then(res => {
+                tasksApi.getTasks(todolistId)
+                    .then(res => dispatch(SetTasksAC(todolistId, res.data.items)))
+            })
+    }
+}
+
+export const deleteTasksTC = (todolistId: string, taskId: string) => {
+    return (dispatch: Dispatch) => {
+        tasksApi.deleteTask(todolistId, taskId)
+            .then(res => {
+                tasksApi.getTasks(todolistId)
+                    .then(res => dispatch(SetTasksAC(todolistId, res.data.items)))
+            })
+    }
+}
+
+export const changeTaskTitleTC = (todolistId: string, taskId: string, newTaskTitle: string) => {
+    return (dispatch: Dispatch) => {
+        tasksApi.updateTaskTitle(todolistId, taskId, newTaskTitle)
+            .then(res => {
+                tasksApi.getTasks(todolistId)
+                    .then(res => dispatch(SetTasksAC(todolistId, res.data.items)))
+            })
+    }
+}
+
+
+

@@ -14,9 +14,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-    AddTodolistAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC,
+    createTodolistTC,
     fetchTodolistsTC,
     FilterType,
     RemoveTodolistAC,
@@ -49,8 +49,8 @@ function AppWithReducers() {
     }, [dispatch])
 
     const addNewTodolist = useCallback((newTodolistTitle: string) => {
-        const newTodolistId = "1";
-        dispatch(AddTodolistAC(newTodolistTitle, newTodolistId))
+        // dispatch(AddTodolistAC(newTodolistTitle))
+        dispatch(createTodolistTC(newTodolistTitle))
     }, [dispatch])
 
     const setNewTodolistTitle = useCallback((todolistId: string, newTodolistTitle: string) => {

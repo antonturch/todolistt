@@ -8,15 +8,16 @@ import {AppRootStateType} from "./state/store";
 import {
     AddTaskAC,
     ChangeTaskTitleAC,
+    createTasksTC,
+    deleteTasksTC,
     fetchTasksTC,
-    RemoveTaskAC,
     StatusChangeAC,
     TaskEntityType,
     TaskStatuses
 } from "./state/task-reducer";
 import {Task} from "./Task";
 import {EditableSpan} from "./EditableSpan";
-import {FilterType} from "./state/todolist-reducer";
+import {changeTodolistTitleTC, deleteTodolistTC, FilterType} from "./state/todolist-reducer";
 
 
 export type TodolistPropsType = {
@@ -45,7 +46,8 @@ export const Todolist = React.memo(({
 
     const tasks = useSelector<AppRootStateType, TaskEntityType[]>(state => state.tasks[todolistId])
     const deleteTask = (todolistId: string, taskId: string) => {
-        dispatch(RemoveTaskAC(todolistId, taskId))
+        // dispatch(RemoveTaskAC(todolistId, taskId))
+        dispatch(deleteTasksTC(todolistId, taskId))
     }
 
     const addNewTask = useCallback((todolistId: string, newTaskTitle: string) => {
@@ -69,7 +71,8 @@ export const Todolist = React.memo(({
     }
 
     const setNewTodolistItem = useCallback((newTodolistTitle: string) => {
-        setNewTodolistTitle(newTodolistTitle, todolistId)
+        // setNewTodolistTitle(newTodolistTitle, todolistId)
+        dispatch(changeTodolistTitleTC(todolistId, newTodolistTitle))
     }, [setNewTodolistTitle, todolistId])
 
     const tasksElements = tasksForTodolist.map(
@@ -85,7 +88,9 @@ export const Todolist = React.memo(({
         [filterTasks, todolistId])
 
     const addNewItem = useCallback((newItemText: string) => {
-        addNewTask(todolistId, newItemText)
+        // addNewTask(todolistId, newItemText)
+
+        dispatch(createTasksTC(todolistId, newItemText))
     }, [addNewTask, todolistId])
 
     return (
@@ -95,7 +100,8 @@ export const Todolist = React.memo(({
                 title={title}/>
                 <Tooltip title="Delete">
                     <IconButton aria-label="delete" size="small">
-                        <DeleteIcon onClick={() => deleteTodolist(todolistId)} fontSize="inherit"/>
+                        <DeleteIcon onClick={() => dispatch(deleteTodolistTC(todolistId))}
+                                    fontSize="inherit"/>
                     </IconButton>
                 </Tooltip>
             </h3>

@@ -4,7 +4,8 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {EditableSpan} from "./EditableSpan";
-import {TaskEntityType} from "./state/task-reducer";
+import {changeTaskTitleTC, TaskEntityType} from "./state/task-reducer";
+import {useDispatch} from "react-redux";
 
 type TaskPropsType = {
     changeStatus: (todolistId: string, taskId: string) => void
@@ -16,6 +17,8 @@ type TaskPropsType = {
 export const Task: React.FC<TaskPropsType> = React.memo(
     ({changeStatus, setNewTaskTitle, task, todolistId, deleteTask}) => {
         console.log("Task render")
+        const dispatch = useDispatch()
+
         const changeStatusHadler = (TodolistId: string, taskId: string) => {
             changeStatus(TodolistId, taskId)
         }
@@ -34,7 +37,8 @@ export const Task: React.FC<TaskPropsType> = React.memo(
                       checkedIcon={<BookmarkIcon/>}
             />
             <EditableSpan setNewItemTitleHandler={(newTaskTitle) => {
-                setNewTaskTitleHandler(todolistId, task.id, newTaskTitle)
+                // setNewTaskTitleHandler(todolistId, task.id, newTaskTitle)
+                dispatch(changeTaskTitleTC(todolistId, task.id, newTaskTitle))
             }}
                           title={task.title}/>
             <IconButton aria-label="delete" size="small">
