@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import "./App.css";
 import {Todolist} from "./Todolist";
 import {AddItemForm} from "./AddItemForm";
@@ -19,19 +19,29 @@ import {
     ChangeTodolistTitleAC,
     FilterType,
     RemoveTodolistAC,
+    SetTodolistAC,
     TodolistEntityType
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskEntityType} from "./state/task-reducer";
+import {todolistsApi} from "./api/todolists-api";
 
 
 export type TasksType = { [key: string]: Array<TaskEntityType> }
 
 function AppWithReducers() {
     console.log("App rendered")
-
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        todolistsApi.getTodolist().then((res) => {
+            debugger
+            dispatch(SetTodolistAC(res.data))
+        })
+    }, [])
+
+
     const todolists = useSelector<AppRootStateType, TodolistEntityType[]>(state => state.todolist)
 
     const filterTasks = useCallback((todolistId: string, newTodolistFilter: FilterType) => {

@@ -3,6 +3,7 @@ import {v1} from "uuid";
 import {
     AddTodolistActionType,
     RemoveTodolistActionType,
+    SetTodolistActionType,
     TodolistID1,
     TodolistID2
 } from "./todolist-reducer";
@@ -86,6 +87,7 @@ export const ChangeTaskTitleAC = (todolistId: string, taskId: string,
 })
 
 export type ActionsType =
+    SetTodolistActionType |
     RemoveTaskActionType
     | AddTaskActionType
     | CheckboxChangeActionType
@@ -205,11 +207,18 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
                     el => el.id === action.taskId ? {...el, title: action.newTaskTitle} : el)
             }
         case "ADD-TODOLIST":
-            return {...state, [action.todolistId]: []}
+            return {[action.todolistId]: [], ...state}
         case "REMOVE-TODOLIST":
             const stateCopy = {...state}
             delete stateCopy[action.todolistId]
             return stateCopy
+        case "SET-TODOLISTS": {
+            const stateCopy = {...state}
+            action.todolists.forEach(el => {
+                stateCopy[el.id] = []
+            })
+            return stateCopy
+        }
         default:
             return state
     }

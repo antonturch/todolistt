@@ -30,17 +30,28 @@ export type ChangeTodolistFilterActionType = {
     newTodolistFilter: FilterType
 }
 
+export type SetTodolistActionType = {
+    type: "SET-TODOLISTS"
+    todolists: TodolistType[]
+}
+
 export type ActionsType =
-    RemoveTodolistActionType
+    SetTodolistActionType
+    | RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType;
+
+export const SetTodolistAC = (todolists: TodolistType[]): SetTodolistActionType => ({
+    type: "SET-TODOLISTS",
+    todolists
+})
 
 export const RemoveTodolistAC = (todolistId: string): RemoveTodolistActionType => ({
     type: "REMOVE-TODOLIST",
     todolistId
 })
-export const AddTodolistAC = (newTodolistTitle: string, todolistId: string): AddTodolistActionType => ({
+export const AddTodolistAC = (todolistId: string, newTodolistTitle: string): AddTodolistActionType => ({
     type: "ADD-TODOLIST",
     todolistId,
     newTodolistTitle
@@ -70,7 +81,13 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
         case "REMOVE-TODOLIST":
             return state.filter(el => el.id !== action.todolistId)
         case "ADD-TODOLIST":
-            return [{id: action.todolistId, title: action.newTodolistTitle, filter: "all", addedDate: "", order: 0,}, ...state]
+            return [{
+                id: action.todolistId,
+                title: action.newTodolistTitle,
+                filter: "all",
+                addedDate: "",
+                order: 0,
+            }, ...state]
         case "CHANGE-TODOLIST-TITLE":
             const todolistForNewTitle = state.find(el => el.id === action.todolistId)
             if (todolistForNewTitle) {
@@ -83,6 +100,11 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
                 todolistForNewFilter.filter = action.newTodolistFilter
             }
             return [...state]
+        case "SET-TODOLISTS":
+            return action.todolists.map(el => ({
+                ...el,
+                filter: "all"
+            }))
         default:
             return state
     }
