@@ -421,8 +421,8 @@ test("change tasks title in correct todolist", () => {
 })
 
 test("tasks should be setting in correct todolist", () => {
-    const TodolistID1 = v1();
-    const TodolistID2 = v1();
+    const TodolistID1 = "1";
+    const TodolistID2 = "2";
 
     const endState = taskReducer({
         [TodolistID1]: [],
@@ -464,6 +464,9 @@ test("tasks should be setting in correct todolist", () => {
             addedDate: "",
         },]))
 
-    expect(endState.TodolistID1[0].title).toBe("HTML1")
+    expect(endState[TodolistID1].length).toBe(3)
+    expect(endState[TodolistID1][0].title).toBe("HTML1")
+    expect(endState[TodolistID1][2].todoListId).toBe(TodolistID1)
+
 })
 

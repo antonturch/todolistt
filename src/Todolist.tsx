@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "./AddItemForm";
 import "./App.css";
 import {Button, IconButton, Paper, Tooltip} from "@mui/material";
@@ -8,6 +8,7 @@ import {AppRootStateType} from "./state/store";
 import {
     AddTaskAC,
     ChangeTaskTitleAC,
+    fetchTasksTC,
     RemoveTaskAC,
     StatusChangeAC,
     TaskEntityType,
@@ -36,8 +37,12 @@ export const Todolist = React.memo(({
                                         filter
                                     }: TodolistPropsType) => {
     console.log("Todolist rendered")
-
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(todolistId))
+    }, [])
+
     const tasks = useSelector<AppRootStateType, TaskEntityType[]>(state => state.tasks[todolistId])
     const deleteTask = (todolistId: string, taskId: string) => {
         dispatch(RemoveTaskAC(todolistId, taskId))

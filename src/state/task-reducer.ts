@@ -3,9 +3,7 @@ import {v1} from "uuid";
 import {
     AddTodolistActionType,
     RemoveTodolistActionType,
-    SetTodolistActionType,
-    TodolistID1,
-    TodolistID2
+    SetTodolistActionType
 } from "./todolist-reducer";
 import {Dispatch} from "redux";
 import {tasksApi} from "../api/todolists-api";
@@ -110,80 +108,7 @@ export type ActionsType =
     | AddTodolistActionType
     | RemoveTodolistActionType;
 
-const initialState: TasksType = {
-    [TodolistID1]: [{
-        id: v1(),
-        title: "HTML1",
-        description: "",
-        status: TaskStatuses.Completed,
-        priority: TaskPriorities.Middle,
-        startDate: "",
-        deadline: "",
-        todoListId: TodolistID1,
-        order: 0,
-        addedDate: "",
-    },
-        {
-            id: v1(),
-            title: "HTML2",
-            description: "",
-            status: TaskStatuses.New,
-            priority: TaskPriorities.Middle,
-            startDate: "",
-            deadline: "",
-            todoListId: TodolistID1,
-            order: 0,
-            addedDate: "",
-        },
-        {
-            id: v1(),
-            title: "HTML3",
-            description: "",
-            status: TaskStatuses.New,
-            priority: TaskPriorities.Middle,
-            startDate: "",
-            deadline: "",
-            todoListId: TodolistID1,
-            order: 0,
-            addedDate: "",
-        },],
-    [TodolistID2]: [{
-        id: v1(),
-        title: "HTML4",
-        description: "",
-        status: TaskStatuses.Completed,
-        priority: TaskPriorities.Middle,
-        startDate: "",
-        deadline: "",
-        todoListId: TodolistID2,
-        order: 0,
-        addedDate: "",
-    },
-        {
-            id: v1(),
-            title: "HTML5",
-            description: "",
-            status: TaskStatuses.Completed,
-            priority: TaskPriorities.Middle,
-            startDate: "",
-            deadline: "",
-            todoListId: TodolistID2,
-            order: 0,
-            addedDate: "",
-        },
-        {
-            id: v1(),
-            title: "HTML6",
-            description: "",
-            status: TaskStatuses.New,
-            priority: TaskPriorities.Middle,
-            startDate: "",
-            deadline: "",
-            todoListId: TodolistID2,
-            order: 0,
-            addedDate: "",
-        },],
-}
+const initialState: TasksType = {}
 
 export const taskReducer = (state = initialState, action: ActionsType): TasksType => {
     switch (action.type) {
@@ -244,8 +169,8 @@ export const taskReducer = (state = initialState, action: ActionsType): TasksTyp
     }
 }
 
-export const fetchTasksTC = () => {
-    return (dispatch: Dispatch, todolistId: string) => {
+export const fetchTasksTC = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
         tasksApi.getTasks(todolistId)
             .then(res => {
                 dispatch(SetTasksAC(todolistId, res.data.items))

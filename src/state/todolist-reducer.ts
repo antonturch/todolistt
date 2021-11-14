@@ -72,10 +72,7 @@ export const ChangeTodolistFilterAC = (todolistId: string,
 
 export const TodolistID1 = v1();
 export const TodolistID2 = v1();
-export const initialState: TodolistEntityType[] = [
-    {id: TodolistID1, title: "What to learn", filter: "all", addedDate: "", order: 0,},
-    {id: TodolistID2, title: "What to buy", filter: "all", addedDate: "", order: 0,},
-]
+export const initialState: TodolistEntityType[] = []
 
 export const todolistReducer = (state = initialState, action: ActionsType): TodolistEntityType[] => {
     switch (action.type) {
