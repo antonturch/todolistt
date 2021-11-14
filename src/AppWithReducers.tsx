@@ -17,15 +17,14 @@ import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC,
+    fetchTodolistsTC,
     FilterType,
     RemoveTodolistAC,
-    SetTodolistAC,
     TodolistEntityType
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskEntityType} from "./state/task-reducer";
-import {todolistsApi} from "./api/todolists-api";
 
 
 export type TasksType = { [key: string]: Array<TaskEntityType> }
@@ -35,10 +34,7 @@ function AppWithReducers() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        todolistsApi.getTodolist().then((res) => {
-            debugger
-            dispatch(SetTodolistAC(res.data))
-        })
+        dispatch(fetchTodolistsTC())
     }, [])
 
 

@@ -50,16 +50,12 @@ export const todolistsApi = {
 }
 
 export type ApiTaskResponseType = {
-    items: TaskEntityType
+    items: TaskEntityType[]
     totalCount: number
     error: string | null
     // resultCode: number
     // messages: string[]
 }
-
-
-
-
 
 
 export const tasksApi = {

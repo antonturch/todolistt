@@ -1,5 +1,6 @@
 import {v1} from "uuid";
-import {TodolistType} from "../api/todolists-api";
+import {todolistsApi, TodolistType} from "../api/todolists-api";
+import {Dispatch} from "redux";
 
 export type FilterType = "all" | "active" | "completed";
 
@@ -107,5 +108,15 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
             }))
         default:
             return state
+    }
+}
+
+export const fetchTodolistsTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistsApi.getTodolist()
+            .then((res) => {
+                debugger
+                dispatch(SetTodolistAC(res.data))
+            })
     }
 }

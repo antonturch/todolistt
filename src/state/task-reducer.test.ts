@@ -3,6 +3,7 @@ import {
     AddTaskAC,
     ChangeTaskTitleAC,
     RemoveTaskAC,
+    SetTasksAC,
     StatusChangeAC,
     TaskPriorities,
     taskReducer,
@@ -419,4 +420,50 @@ test("change tasks title in correct todolist", () => {
     expect(endState).not.toBe(startState)
 })
 
+test("tasks should be setting in correct todolist", () => {
+    const TodolistID1 = v1();
+    const TodolistID2 = v1();
+
+    const endState = taskReducer({
+        [TodolistID1]: [],
+        [TodolistID2]: []
+    }, SetTasksAC(TodolistID1, [{
+        id: v1(),
+        title: "HTML1",
+        description: "",
+        status: TaskStatuses.Completed,
+        priority: TaskPriorities.Middle,
+        startDate: "",
+        deadline: "",
+        todoListId: TodolistID1,
+        order: 0,
+        addedDate: "",
+    },
+        {
+            id: v1(),
+            title: "HTML2",
+            description: "",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Middle,
+            startDate: "",
+            deadline: "",
+            todoListId: TodolistID1,
+            order: 0,
+            addedDate: "",
+        },
+        {
+            id: v1(),
+            title: "HTML3",
+            description: "",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Middle,
+            startDate: "",
+            deadline: "",
+            todoListId: TodolistID1,
+            order: 0,
+            addedDate: "",
+        },]))
+
+    expect(endState.TodolistID1[0].title).toBe("HTML1")
+})
 
