@@ -1,19 +1,33 @@
 import axios from "axios";
 import {TaskEntityType} from "../state/task-reducer";
 
+
 // const settings = {
 //     withCredentials: true,
 //     headers: {
 //         "api-key": "cf073426-4174-4c42-a07f-d5b89d961d16"
 //     }
 // }
+
+//types
 export type TodolistType = {
     id: string
     title: string
     addedDate: string
     order: number
 }
-
+export type ApiTodolistResponseType<todolist = {}> = {
+    data: todolist
+    resultCode: number
+    messages: string[]
+}
+export type ApiTaskResponseType = {
+    items: TaskEntityType[]
+    totalCount: number
+    error: string | null
+    // resultCode: number
+    // messages: string[]
+}
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1/",
     headers: {
@@ -22,12 +36,7 @@ const instance = axios.create({
     withCredentials: true,
 })
 
-export type ApiTodolistResponseType<todolist = {}> = {
-    data: todolist
-    resultCode: number
-    messages: string[]
-}
-
+//API objs
 export const todolistsApi = {
     getTodolist: () => {
         return instance.get<TodolistType[]>("todo-lists")
@@ -48,15 +57,6 @@ export const todolistsApi = {
         )
     },
 }
-
-export type ApiTaskResponseType = {
-    items: TaskEntityType[]
-    totalCount: number
-    error: string | null
-    // resultCode: number
-    // messages: string[]
-}
-
 
 export const tasksApi = {
     getTasks: (todolistId: string) => {
