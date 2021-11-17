@@ -93,8 +93,8 @@ test("add correct file stryctyre in tasks and todolists", () => {
             },],
     }
 
-    const endTodolistState = todolistReducer(startTodolistState, AddTodolistAC("123", "Added todolist"))
-    const endTasksState = taskReducer(startTasksState, AddTodolistAC("123", "Added todolist"))
+    const endTodolistState = todolistReducer(startTodolistState, AddTodolistAC("Added todolist"))
+    const endTasksState = taskReducer(startTasksState, AddTodolistAC("Added todolist"))
 
     expect(endTodolistState.length).toBe(3)
     expect(endTodolistState[0].title).toBe("Added todolist")

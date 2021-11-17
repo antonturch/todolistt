@@ -42,7 +42,7 @@ export const Todolist = React.memo(({
 
     useEffect(() => {
         dispatch(fetchTasksTC(todolistId))
-    }, [])
+    }, [dispatch, todolistId])
 
     const tasks = useSelector<AppRootStateType, TaskEntityType[]>(state => state.tasks[todolistId])
     const deleteTask = (todolistId: string, taskId: string) => {
@@ -73,7 +73,7 @@ export const Todolist = React.memo(({
     const setNewTodolistItem = useCallback((newTodolistTitle: string) => {
         // setNewTodolistTitle(newTodolistTitle, todolistId)
         dispatch(changeTodolistTitleTC(todolistId, newTodolistTitle))
-    }, [setNewTodolistTitle, todolistId])
+    }, [dispatch, todolistId])
 
     const tasksElements = tasksForTodolist.map(
         el => <Task changeStatus={changeStatus} setNewTaskTitle={setNewTaskTitle} task={el}
@@ -91,7 +91,7 @@ export const Todolist = React.memo(({
         // addNewTask(todolistId, newItemText)
 
         dispatch(createTasksTC(todolistId, newItemText))
-    }, [addNewTask, todolistId])
+    }, [dispatch, todolistId])
 
     return (
         <Paper style={{padding: "20px"}} elevation={2}>

@@ -35,7 +35,7 @@ function AppWithReducers() {
 
     useEffect(() => {
         dispatch(fetchTodolistsTC())
-    }, [])
+    }, [dispatch])
 
 
     const todolists = useSelector<AppRootStateType, TodolistEntityType[]>(state => state.todolist)
