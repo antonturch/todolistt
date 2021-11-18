@@ -54,17 +54,9 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
                 order: 0,
             }, ...state]
         case "CHANGE-TODOLIST-TITLE":
-            const todolistForNewTitle = state.find(el => el.id === action.todolistId)
-            if (todolistForNewTitle) {
-                todolistForNewTitle.title = action.newTodolistTitle
-            }
-            return [...state]
+            return state.map(el => el.id === action.todolistId ? {...el, title: action.newTodolistTitle} : el )
         case "CHANGE-TODOLIST-FILTER":
-            const todolistForNewFilter = state.find(el => el.id === action.todolistId)
-            if (todolistForNewFilter) {
-                todolistForNewFilter.filter = action.newTodolistFilter
-            }
-            return [...state]
+            return state.map(el => el.id === action.todolistId ? {...el, filter: action.newTodolistFilter} : el )
         case "SET-TODOLISTS":
             return action.todolists.map(el => ({
                 ...el,

@@ -57,7 +57,8 @@ test("correct todolist should change his title", () => {
     expect(endState.length).toBe(2);
     expect(endState[0].title).toBe("changedTitle");
     expect(startState).not.toBe(endState);
-    expect(startState[0]).toBe(endState[0]);
+    expect(startState[1]).toBe(endState[1]);
+    expect(startState[0]).not.toBe(endState[0]);
 })
 
 test("correct todolist should change filter", () => {
@@ -78,7 +79,8 @@ test("correct todolist should change filter", () => {
     expect(endState.length).toBe(2);
     expect(endState[0].filter).toBe("active");
     expect(startState).not.toBe(endState);
-    expect(startState[0]).toBe(endState[0]);
+    expect(startState[1]).toBe(endState[1]);
+    expect(startState[0]).not.toBe(endState[0]);
 })
 
 test("tasks from API should be set to REDUX state", () => {

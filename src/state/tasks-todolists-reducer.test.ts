@@ -9,7 +9,7 @@ import {
 import {TaskPriorities, taskReducer, TaskStatuses} from "./task-reducer";
 import {TodolistType} from "../api/todolists-api";
 
-test("add correct file stryctyre in tasks and todolists", () => {
+test.skip("add correct file stryctyre in tasks and todolists", () => {
     const TodolistID1 = v1();
     const TodolistID2 = v1();
 
