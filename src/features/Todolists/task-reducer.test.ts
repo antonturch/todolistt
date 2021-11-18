@@ -7,9 +7,10 @@ import {
     StatusChangeAC,
     TaskPriorities,
     taskReducer,
-    TaskStatuses
+    TaskStatuses,
+    TasksType
 } from "./task-reducer";
-import {TasksType} from "../AppWithReducers";
+
 
 test("task in correct todolist should be remove", () => {
 

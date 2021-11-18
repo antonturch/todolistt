@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 import "./App.css";
-import {Todolist} from "./Todolist";
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {Container, Grid, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
@@ -13,21 +12,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-    ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC,
-    createTodolistTC,
-    fetchTodolistsTC,
-    FilterType,
-    RemoveTodolistAC,
-    TodolistEntityType
-} from "./state/todolist-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {TaskEntityType} from "./state/task-reducer";
+import {createTodolistTC, fetchTodolistsTC} from "../features/Todolists/todolist-reducer";
+import {useDispatch} from "react-redux";
+import {TodolistsList} from "../features/Todolists/TodolistsList";
 
-
-export type TasksType = { [key: string]: Array<TaskEntityType> }
 
 function AppWithReducers() {
     console.log("App rendered")
@@ -37,24 +25,9 @@ function AppWithReducers() {
         dispatch(fetchTodolistsTC())
     }, [dispatch])
 
-
-    const todolists = useSelector<AppRootStateType, TodolistEntityType[]>(state => state.todolist)
-
-    const filterTasks = useCallback((todolistId: string, newTodolistFilter: FilterType) => {
-        dispatch(ChangeTodolistFilterAC(todolistId, newTodolistFilter));
-    }, [dispatch])
-
-    const deleteTodolist = useCallback((todolistId: string) => {
-        dispatch(RemoveTodolistAC(todolistId))
-    }, [dispatch])
-
     const addNewTodolist = useCallback((newTodolistTitle: string) => {
         // dispatch(AddTodolistAC(newTodolistTitle))
         dispatch(createTodolistTC(newTodolistTitle))
-    }, [dispatch])
-
-    const setNewTodolistTitle = useCallback((todolistId: string, newTodolistTitle: string) => {
-        dispatch(ChangeTodolistTitleAC(todolistId, newTodolistTitle))
     }, [dispatch])
 
     const actions = [
@@ -87,16 +60,7 @@ function AppWithReducers() {
                 <Grid container style={{padding: "20px", justifyContent: "center"}}>
                     <AddItemForm addNewItem={addNewTodolist}/>
                 </Grid>
-                <Grid container spacing={3} style={{justifyContent: "center"}}>
-                    {todolists.map((el: TodolistEntityType) => {
-                        return <Grid item maxWidth={"400px"} key={el.id}>
-                            <Todolist setNewTodolistTitle={setNewTodolistTitle}
-                                      deleteTodolist={deleteTodolist}
-                                      todolistId={el.id} filter={el.filter} title={el.title}
-                                      filterTasks={filterTasks}/>
-                        </Grid>
-                    })}
-                </Grid>
+                <TodolistsList/>
             </Container>
             <SpeedDial
                 ariaLabel="SpeedDial basic example"

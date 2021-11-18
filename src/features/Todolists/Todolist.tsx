@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from "react";
-import {AddItemForm} from "./AddItemForm";
-import "./App.css";
+import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import "../../app/App.css";
 import {Button, IconButton, Paper, Tooltip} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
+import {AppRootStateType} from "../../app/store";
 import {
     AddTaskAC,
     ChangeTaskTitleAC,
@@ -14,10 +14,10 @@ import {
     StatusChangeAC,
     TaskEntityType,
     TaskStatuses
-} from "./state/task-reducer";
-import {Task} from "./Task";
-import {EditableSpan} from "./EditableSpan";
-import {changeTodolistTitleTC, deleteTodolistTC, FilterType} from "./state/todolist-reducer";
+} from "./task-reducer";
+import {Task} from "./Task/Task";
+import {EditableSpan} from "../../components/EditableSpan/EditableSpan";
+import {changeTodolistTitleTC, deleteTodolistTC, FilterType} from "./todolist-reducer";
 
 
 export type TodolistPropsType = {

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import "./App.css";
+import "../../app/App.css";
 
 export type AddItemPropsType = {
     addNewItem: (newItemText: string) => void

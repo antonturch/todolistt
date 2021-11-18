@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskEntityType} from "../state/task-reducer";
+import {TaskEntityType} from "../features/Todolists/task-reducer";
 
 
 // const settings = {

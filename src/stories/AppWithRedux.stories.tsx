@@ -1,4 +1,4 @@
-import AppWithReducers from "../AppWithReducers";
+import AppWithReducers from "../app/AppWithReducers";
 import {ReduxStoreProviderDecorator} from "../ReduxStoreProviderDecorator";
 
 export default {

@@ -1,5 +1,5 @@
 import {Provider} from "react-redux";
-import {store} from "./state/store";
+import {store} from "./app/store";
 
 // const TodolistID1 = v1();
 // const TodolistID2 = v1();

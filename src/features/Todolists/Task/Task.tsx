@@ -3,8 +3,8 @@ import {Checkbox, IconButton} from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {EditableSpan} from "./EditableSpan";
-import {changeTaskTitleTC, TaskEntityType} from "./state/task-reducer";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
+import {changeTaskTitleTC, TaskEntityType} from "../task-reducer";
 import {useDispatch} from "react-redux";
 
 type TaskPropsType = {

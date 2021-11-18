@@ -5,8 +5,8 @@ import {
     SetTodolistAC,
     TodolistEntityType,
     todolistReducer
-} from "./todolist-reducer";
-import {TaskPriorities, taskReducer, TaskStatuses} from "./task-reducer";
+} from "../features/Todolists/todolist-reducer";
+import {TaskPriorities, taskReducer, TaskStatuses} from "../features/Todolists/task-reducer";
 import {TodolistType} from "../api/todolists-api";
 
 test.skip("add correct file stryctyre in tasks and todolists", () => {

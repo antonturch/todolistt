@@ -1,4 +1,4 @@
-import {Task} from "./Task";
+import {Task} from "../features/Todolists/Task/Task";
 import {action} from "@storybook/addon-actions";
 import {v1} from "uuid";
 
